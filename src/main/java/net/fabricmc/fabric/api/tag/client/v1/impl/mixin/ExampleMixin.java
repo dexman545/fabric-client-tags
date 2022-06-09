@@ -1,6 +1,6 @@
-package net.fabricmc.example.mixin;
+package net.fabricmc.fabric.api.tag.client.v1.impl.mixin;
 
-import net.fabricmc.example.ExampleMod;
+import net.fabricmc.fabric.api.tag.client.v1.test.ExampleMod;
 import net.minecraft.client.gui.screen.TitleScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

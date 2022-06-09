@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.fabricmc.fabric.api.tag.client.v1.test.ExampleMod"
     ]
   },
   "mixins": [
