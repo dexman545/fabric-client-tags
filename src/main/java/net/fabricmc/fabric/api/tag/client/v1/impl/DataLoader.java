@@ -57,8 +57,9 @@ public class DataLoader {
                 @Nullable
                 @Override
                 public Collection<Identifier> tag(Identifier id) {
-                    LocalTag tag = new LocalTag(localTag.type(), id);
-                    return LocalTags.LOCAL_TAG_CACHE.computeIfAbsent(tag, t -> LocalTags.getOrCreateLocalTag(localTag.type(), id));
+                    LocalTag tag = localTag.withId(id);
+                    return LocalTags.LOCAL_TAG_CACHE.computeIfAbsent(tag,
+                            LocalTags::getOrCreateLocalTag);
                 }
             }, ids::add);
         }

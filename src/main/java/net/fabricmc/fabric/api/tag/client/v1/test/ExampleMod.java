@@ -27,5 +27,6 @@ public class ExampleMod implements ModInitializer {
 		x.loadTag(new LocalTag(TagType.BLOCK, ConventionalBlockTags.ORES.id()));
 
 		LOGGER.info(String.valueOf(LocalTags.getOrCreateLocalTag(TagType.BLOCK, ConventionalBlockTags.ORES.id())));
+		LOGGER.info(String.valueOf(LocalTags.getOrCreateLocalTag(ConventionalBlockTags.ORES)));
 	}
 }
