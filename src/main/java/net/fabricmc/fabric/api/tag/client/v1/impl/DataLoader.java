@@ -40,7 +40,7 @@ public class DataLoader {
                     list.addAll(tagFile.entries());
                 });
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e);//todo not throw
             }
         }
 
