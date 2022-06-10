@@ -20,10 +20,8 @@ public class TagUtil {
                 var maybeKey = registry.getKey(entry);
 
                 // Check synced tag
-                if (registry.containsTag(tagKey)) {
-                    return maybeKey.filter(registryKey -> registry.entryOf(registryKey).isIn(tagKey))
-                            .isPresent();
-                }
+                return maybeKey.filter(registryKey -> registry.entryOf(registryKey).isIn(tagKey))
+                        .isPresent();
             }
         }
 
@@ -55,20 +53,7 @@ public class TagUtil {
     }
 
     public static <T> boolean isIn(TagKey<T> tagKey, RegistryEntry<T> registryEntry) {
-        // Check if the tag exists in the dynamic registry first
-        if (MinecraftClient.getInstance() != null) {
-            if (MinecraftClient.getInstance().world != null) {
-                if (MinecraftClient.getInstance().world.getRegistryManager() != null) {
-                    Optional<? extends Registry<T>> maybeRegistry = MinecraftClient.getInstance().world
-                            .getRegistryManager().getOptional(tagKey.registry());
-                    if (maybeRegistry.isPresent()) {
-                        if (maybeRegistry.get().containsTag(tagKey)) {
-                            registryEntry.isIn(tagKey);
-                        }
-                    }
-                }
-            }
-        }
+        registryEntry.isIn(tagKey);
 
         return false;
     }
