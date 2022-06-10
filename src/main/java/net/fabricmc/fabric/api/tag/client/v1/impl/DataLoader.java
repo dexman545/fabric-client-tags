@@ -4,14 +4,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
-import net.fabricmc.fabric.api.tag.client.v1.api.LocalTag;
 import net.fabricmc.fabric.api.tag.client.v1.api.LocalTags;
-import net.fabricmc.fabric.api.tag.client.v1.api.TagType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.tag.TagEntry;
 import net.minecraft.tag.TagFile;
+import net.minecraft.tag.TagKey;
+import net.minecraft.tag.TagManagerLoader;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -23,9 +25,9 @@ import java.util.HashSet;
 import java.util.Optional;
 
 public class DataLoader {
-    public HashSet<Identifier> loadTag(LocalTag localTag) {
+    public HashSet<Identifier> loadTag(TagKey<?> tagKey) {
         var list = new HashSet<TagEntry>();
-        HashSet<Path> tagFiles = getTagFiles(localTag.type(), localTag.tagId());
+        HashSet<Path> tagFiles = getTagFiles(tagKey.registry(), tagKey.id());
         for (Path tagPath : tagFiles) {
             try (BufferedReader tagReader = Files.newBufferedReader(tagPath)) {
                 JsonElement jsonElement = JsonParser.parseReader(tagReader);
@@ -57,7 +59,7 @@ public class DataLoader {
                 @Nullable
                 @Override
                 public Collection<Identifier> tag(Identifier id) {
-                    LocalTag tag = localTag.withId(id);
+                    TagKey<?> tag = TagKey.of(tagKey.registry(), id);
                     return LocalTags.LOCAL_TAG_CACHE.computeIfAbsent(tag,
                             LocalTags::getOrCreateLocalTag);
                 }
@@ -67,12 +69,12 @@ public class DataLoader {
         return ids;
     }
 
-    public HashSet<Path> getTagFiles(TagType tagType, Identifier identifier) {
-        return getTagFiles(tagType.folder(), identifier);
+    public HashSet<Path> getTagFiles(RegistryKey<? extends Registry<?>> registryKey, Identifier identifier) {
+        return getTagFiles(TagManagerLoader.getPath(registryKey), identifier);
     }
 
     public HashSet<Path> getTagFiles(String tagType, Identifier identifier) {
-        String tagFile = "data/%s/tags/%s/%s.json".formatted(identifier.getNamespace(), tagType, identifier.getPath());
+        String tagFile = "data/%s/%s/%s.json".formatted(identifier.getNamespace(), tagType, identifier.getPath());
         return getResourcePaths(tagFile);
     }
 

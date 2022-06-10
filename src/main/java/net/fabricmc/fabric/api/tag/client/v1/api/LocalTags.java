@@ -10,24 +10,11 @@ import java.util.*;
 
 public class LocalTags {
     @ApiStatus.Internal
-    public static final Map<LocalTag, Set<Identifier>> LOCAL_TAG_CACHE =
+    public static final Map<TagKey<?>, Set<Identifier>> LOCAL_TAG_CACHE =
             Collections.synchronizedMap(new Object2ObjectOpenHashMap<>());
     private static final DataLoader LOADER = new DataLoader();
 
-    public static Set<Identifier> getOrCreateLocalTag(TagType type, Identifier tagId) {
-        return getOrCreateLocalTag(new LocalTag(type, tagId));
-    }
-
-    public static Set<Identifier> getOrCreateLocalTag(LocalTag tag) {
-        return LOCAL_TAG_CACHE.computeIfAbsent(tag, LOADER::loadTag);
-    }
-
     public static Set<Identifier> getOrCreateLocalTag(TagKey<?> tagKey) {
-        Optional<TagType> maybeType = TagType.getTypeForRegistry(tagKey.registry());
-        if (maybeType.isPresent()) {
-            return getOrCreateLocalTag(maybeType.get(), tagKey.id());
-        }
-
-        return new HashSet<>();
+        return LOCAL_TAG_CACHE.computeIfAbsent(tagKey, LOADER::loadTag);
     }
 }
