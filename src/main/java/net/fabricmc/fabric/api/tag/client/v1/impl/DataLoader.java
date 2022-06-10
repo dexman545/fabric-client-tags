@@ -60,8 +60,7 @@ public class DataLoader {
                 @Override
                 public Collection<Identifier> tag(Identifier id) {
                     TagKey<?> tag = TagKey.of(tagKey.registry(), id);
-                    return LocalTags.LOCAL_TAG_CACHE.computeIfAbsent(tag,
-                            LocalTags::getOrCreateLocalTag);
+                    return LocalTags.getOrCreateLocalTag(tag);
                 }
             }, ids::add);
         }
