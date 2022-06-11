@@ -10,13 +10,14 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
-import org.jetbrains.annotations.ApiStatus;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 public class ClientTags {
-    @ApiStatus.Internal
-    public static final Map<TagKey<?>, Set<Identifier>> LOCAL_TAG_CACHE =
+    private static final Map<TagKey<?>, Set<Identifier>> LOCAL_TAG_CACHE =
             Collections.synchronizedMap(new Object2ObjectOpenHashMap<>());
     private static final DataLoader LOADER = new DataLoader();
 
