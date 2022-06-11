@@ -26,6 +26,7 @@ import java.util.Optional;
 
 public class DataLoader {
     /**
+     * Load a given tag from the available mods into a set of {@code Identifier}s.
      * Parsing based on {@link net.minecraft.tag.TagGroupLoader#loadTags(net.minecraft.resource.ResourceManager)}
      */
     public HashSet<Identifier> loadTag(TagKey<?> tagKey) {
@@ -71,16 +72,27 @@ public class DataLoader {
         return ids;
     }
 
-    public HashSet<Path> getTagFiles(RegistryKey<? extends Registry<?>> registryKey, Identifier identifier) {
+    /**
+     * @param registryKey the RegistryKey of the TagKey.
+     * @param identifier the Identifier of the tag.
+     * @return the paths to all tag json files within the available mods.
+     */
+    private HashSet<Path> getTagFiles(RegistryKey<? extends Registry<?>> registryKey, Identifier identifier) {
         return getTagFiles(TagManagerLoader.getPath(registryKey), identifier);
     }
 
-    public HashSet<Path> getTagFiles(String tagType, Identifier identifier) {
+    /**
+     * @return the paths to all tag json files within the available mods.
+     */
+    private HashSet<Path> getTagFiles(String tagType, Identifier identifier) {
         String tagFile = "data/%s/%s/%s.json".formatted(identifier.getNamespace(), tagType, identifier.getPath());
         return getResourcePaths(tagFile);
     }
 
-    public HashSet<Path> getResourcePaths(String path) {
+    /**
+     * @return all paths from the available mods that match the given internal path.
+     */
+    private HashSet<Path> getResourcePaths(String path) {
         HashSet<Path> out = new HashSet<>();
         for (ModContainer mod : FabricLoader.getInstance().getAllMods()) {
             mod.findPath(path).ifPresent(out::add);

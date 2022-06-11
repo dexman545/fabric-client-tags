@@ -16,15 +16,35 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Client tags are tags loaded from the available mod datapacks, allowing for the use of tags client-side that
+ * do not exist when tags are synced to the client from the server, or overloaded by world-specific datapacks.
+ */
 public class ClientTags {
     private static final Map<TagKey<?>, Set<Identifier>> LOCAL_TAG_CACHE =
             Collections.synchronizedMap(new Object2ObjectOpenHashMap<>());
     private static final DataLoader LOADER = new DataLoader();
 
+    /**
+     * Load a tag into the cache, loading any contained tags along with it.
+     *
+     * @param tagKey the {@code TagKey} to load.
+     * @return a set of {@code Identifier}s this tag contains.
+     */
     public static Set<Identifier> getOrCreateLocalTag(TagKey<?> tagKey) {
         return LOCAL_TAG_CACHE.computeIfAbsent(tagKey, LOADER::loadTag);
     }
 
+    /**
+     * Checks if an entry is in a tag.
+     * <p>
+     * If the tag does synced tag does exist, it is queried. If it does not exist,
+     * the tag loaded from the available mods is checked.
+     *
+     * @param tagKey the {@code TagKey} to being checked.
+     * @param entry the entry to check.
+     * @return if the entry is in the given tag.
+     */
     @SuppressWarnings("unchecked")
     public static <T> boolean isInWithLocalFallback(TagKey<T> tagKey, T entry) {
         var maybeRegistry = Registry.REGISTRIES.getOrEmpty(tagKey.registry().getValue());
@@ -49,6 +69,19 @@ public class ClientTags {
         return false;
     }
 
+    /**
+     * Checks if an entry is in a tag, for use with entries from a dynamic registry,
+     * such as {@link net.minecraft.world.biome.Biome}s.
+     * <p>
+     * If the tag does synced tag does exist, it is queried. If it does not exist,
+     * the tag loaded from the available mods is checked.
+     * <p>
+     * Client-side only.
+     *
+     * @param tagKey the {@code TagKey} to being checked.
+     * @param registryEntry the entry to check.
+     * @return if the entry is in the given tag.
+     */
     @Environment(EnvType.CLIENT)
     public static <T> boolean isInWithLocalFallback(TagKey<T> tagKey, RegistryEntry<T> registryEntry) {
         // Check if the tag exists in the dynamic registry first
@@ -73,6 +106,13 @@ public class ClientTags {
         return false;
     }
 
+    /**
+     * Checks if an entry is in a tag produced from the available mods.
+     *
+     * @param tagKey the {@code TagKey} to being checked.
+     * @param registryKey the entry to check.
+     * @return if the entry is in the given tag.
+     */
     public static <T> boolean isInLocal(TagKey<T> tagKey, RegistryKey<T> registryKey) {
         if (tagKey.registry().getValue().equals(registryKey.getRegistry())) {
             // Check local tags
