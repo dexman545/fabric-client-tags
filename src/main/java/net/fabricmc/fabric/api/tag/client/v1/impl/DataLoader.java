@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
-import net.fabricmc.fabric.api.tag.client.v1.api.LocalTags;
+import net.fabricmc.fabric.api.tag.client.v1.api.ClientTags;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.tag.TagEntry;
@@ -63,7 +63,7 @@ public class DataLoader {
                 @Override
                 public Collection<Identifier> tag(Identifier id) {
                     TagKey<?> tag = TagKey.of(tagKey.registry(), id);
-                    return LocalTags.getOrCreateLocalTag(tag);
+                    return ClientTags.getOrCreateLocalTag(tag);
                 }
             }, ids::add);
         }

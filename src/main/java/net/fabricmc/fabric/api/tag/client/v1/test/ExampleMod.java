@@ -1,7 +1,7 @@
 package net.fabricmc.fabric.api.tag.client.v1.test;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.tag.client.v1.api.LocalTags;
+import net.fabricmc.fabric.api.tag.client.v1.api.ClientTags;
 import net.fabricmc.fabric.api.tag.client.v1.api.TagUtil;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
@@ -24,12 +24,12 @@ public class ExampleMod implements ModInitializer {
 
 		LOGGER.info("Hello Fabric world!");
 
-		LOGGER.info(String.valueOf(LocalTags.getOrCreateLocalTag(ConventionalBlockTags.ORES)));
-		LOGGER.info(String.valueOf(LocalTags.getOrCreateLocalTag(ConventionalBiomeTags.AQUATIC)));
+		LOGGER.info(String.valueOf(ClientTags.getOrCreateLocalTag(ConventionalBlockTags.ORES)));
+		LOGGER.info(String.valueOf(ClientTags.getOrCreateLocalTag(ConventionalBiomeTags.AQUATIC)));
 
-		LOGGER.info(String.valueOf(LocalTags.isInWithLocalFallback(ConventionalBlockTags.ORES, Blocks.DIAMOND_ORE)));
-		LOGGER.info(String.valueOf(LocalTags.isInLocal(ConventionalBiomeTags.AQUATIC, BiomeKeys.OCEAN)));
-		LOGGER.info(String.valueOf(LocalTags.isInWithLocalFallback(ConventionalBlockTags.ORES, Blocks.DIAMOND_BLOCK)));
+		LOGGER.info(String.valueOf(ClientTags.isInWithLocalFallback(ConventionalBlockTags.ORES, Blocks.DIAMOND_ORE)));
+		LOGGER.info(String.valueOf(ClientTags.isInLocal(ConventionalBiomeTags.AQUATIC, BiomeKeys.OCEAN)));
+		LOGGER.info(String.valueOf(ClientTags.isInWithLocalFallback(ConventionalBlockTags.ORES, Blocks.DIAMOND_BLOCK)));
 		LOGGER.info(String.valueOf(TagUtil.isIn(ConventionalBlockTags.ORES, Blocks.DIAMOND_ORE)));
 		LOGGER.info(String.valueOf(TagUtil.isIn(ConventionalBlockTags.ORES, Blocks.DIAMOND_BLOCK)));
 	}

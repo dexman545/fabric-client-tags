@@ -14,7 +14,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.*;
 
-public class LocalTags {
+public class ClientTags {
     @ApiStatus.Internal
     public static final Map<TagKey<?>, Set<Identifier>> LOCAL_TAG_CACHE =
             Collections.synchronizedMap(new Object2ObjectOpenHashMap<>());
