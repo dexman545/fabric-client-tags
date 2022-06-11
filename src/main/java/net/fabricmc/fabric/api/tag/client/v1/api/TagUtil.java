@@ -24,9 +24,7 @@ public class TagUtil {
     }
 
     public static <T> boolean isIn(TagKey<T> tagKey, RegistryEntry<T> registryEntry) {
-        registryEntry.isIn(tagKey);
-
-        return false;
+        return registryEntry.isIn(tagKey);
     }
 
 }
