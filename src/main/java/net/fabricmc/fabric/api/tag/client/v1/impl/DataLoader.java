@@ -25,6 +25,9 @@ import java.util.HashSet;
 import java.util.Optional;
 
 public class DataLoader {
+    /**
+     * Parsing based on {@link net.minecraft.tag.TagGroupLoader#loadTags(net.minecraft.resource.ResourceManager)}
+     */
     public HashSet<Identifier> loadTag(TagKey<?> tagKey) {
         var list = new HashSet<TagEntry>();
         HashSet<Path> tagFiles = getTagFiles(tagKey.registry(), tagKey.id());
