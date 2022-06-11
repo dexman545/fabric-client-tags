@@ -22,7 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Optional;
 
 public class DataLoader {
     /**
@@ -35,16 +34,16 @@ public class DataLoader {
         for (Path tagPath : tagFiles) {
             try (BufferedReader tagReader = Files.newBufferedReader(tagPath)) {
                 JsonElement jsonElement = JsonParser.parseReader(tagReader);
-                Optional<TagFile> maybeTagFile = TagFile.CODEC.parse(new Dynamic<>(JsonOps.INSTANCE, jsonElement))
-                        .get().left();
+                TagFile maybeTagFile = TagFile.CODEC.parse(new Dynamic<>(JsonOps.INSTANCE, jsonElement))
+                        .result().orElse(null);
 
-                maybeTagFile.ifPresent(tagFile -> {
-                    if (tagFile.replace()) {
+                if (maybeTagFile != null) {
+                    if (maybeTagFile.replace()) {
                         list.clear();
                     }
 
-                    list.addAll(tagFile.entries());
-                });
+                    list.addAll(maybeTagFile.entries());
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);//todo not throw
             }
